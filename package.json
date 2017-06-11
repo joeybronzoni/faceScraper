@@ -1,0 +1,23 @@
+{
+  "name": "facescraper",
+  "version": "1.0.0",
+  "description": "web app that lets users leave comments on the latest news. But you're not going to actually write any articles; instead, you'll flex your Mongoose and Cheerio muscles to scrape news from another site",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/josephskrzysowski/faceScraper.git"
+  },
+  "keywords": [
+    "mongo",
+    "scraper"
+  ],
+  "author": "Joseph Skrzysowski",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/josephskrzysowski/faceScraper/issues"
+  },
+  "homepage": "https://github.com/josephskrzysowski/faceScraper#readme"
+}
