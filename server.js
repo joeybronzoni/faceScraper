@@ -79,7 +79,7 @@ app.get('/articles', (req, res) => {
     if (err) {
       console.log(err);
       }
-    //Otherwise, renders articles handlebar template
+    //Otherwise, renders articles.handlebar template
     else {
       res.render('articles', {
       //res.redirect('/articles',{
