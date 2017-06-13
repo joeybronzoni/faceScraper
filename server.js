@@ -13,10 +13,10 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(express.static('public'));
 
 
-// mongoose.connect('mongodb://localhost/facescraper')
+ mongoose.connect('mongodb://localhost/facescraper')
 
 //Connection deploy to Heroku
-mongoose.connect('mongodb://heroku_02vdtm5w:93eipjh028heqe7irl32brkjbt@ds119772.mlab.com:19772/heroku_02vdtm5w');
+//mongoose.connect('mongodb://heroku_02vdtm5w:93eipjh028heqe7irl32brkjbt@ds119772.mlab.com:19772/heroku_02vdtm5w');
 
 var db = mongoose.connection;
 
@@ -34,7 +34,7 @@ app.get('/', function (req, res) {
 });
 console.log('----------------------------------scraping---------------------------------------------');
 
-//Route to scrape macrumors.com
+//Route to scrape askubuntu.com
 app.get('/scraping', (req, res) => {
   request('https://askubuntu.com/', (err, respond, html) => {
     let $ = cheerio.load(html);
@@ -82,6 +82,7 @@ app.get('/articles', (req, res) => {
     //Otherwise, renders articles handlebar template
     else {
       res.render('articles', {
+      //res.redirect('/articles',{
         //"loop over articles" is the variable 
         articles: doc
         });
@@ -103,6 +104,7 @@ app.get('/articles/:id', (req, res) => {
       }
     //Else renders comments.handlebars
     else {
+//       res.redirect('/comments',{
       res.render('comments', {
         //Loop over each instance of comments for a particular article to display all comments
         article: doc
