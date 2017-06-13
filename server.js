@@ -16,7 +16,7 @@ app.use(express.static('public'));
  mongoose.connect('mongodb://localhost/facescraper')
 
 //Connection deploy to Heroku
-//mongoose.connect('mongodb://heroku_02vdtm5w:93eipjh028heqe7irl32brkjbt@ds119772.mlab.com:19772/heroku_02vdtm5w');
+mongoose.connect('mongodb://heroku_02vdtm5w:93eipjh028heqe7irl32brkjbt@ds119772.mlab.com:19772/heroku_02vdtm5w');
 
 var db = mongoose.connection;
 
