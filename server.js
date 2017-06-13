@@ -12,11 +12,18 @@ var app = express();
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(express.static('public'));
 
-
-// mongoose.connect('mongodb://localhost/facescraper')
-
+if(process.env.NODE_ENV == 'production'){
 //Connection deploy to Heroku
-mongoose.connect('mongodb://heroku_02vdtm5w:93eipjh028heqe7irl32brkjbt@ds119772.mlab.com:19772/heroku_02vdtm5w');
+  mongoose.connect('mongodb://heroku_02vdtm5w:93eipjh028heqe7irl32brkjbt@ds119772.mlab.com:19772/heroku_02vdtm5w');
+} else {
+//Connection local
+  mongoose.connect('mongodb://localhost/facescraper')
+  //mongoose.connect('mongodb://heroku_60zpcwg0:ubn0n27pi2856flqoedo9glvh8@ds119578.mlab.com:19578/heroku_60zpcwg0');
+}
+
+
+
+
 
 var db = mongoose.connection;
 
