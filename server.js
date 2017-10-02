@@ -7,18 +7,22 @@ var cheerio = require('cheerio');
 
 var Article = require('./models/articles.js');
 var Comment = require('./models/comments.js');
-
+var URL = 'https://askubuntu.com';
 var app = express();
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(express.static('public'));
+
+
+
+
+
 
 if(process.env.NODE_ENV == 'production'){
 //Connection deploy to Heroku
   mongoose.connect('mongodb://heroku_02vdtm5w:93eipjh028heqe7irl32brkjbt@ds119772.mlab.com:19772/heroku_02vdtm5w');
 } else {
 //Connection local
-  mongoose.connect('mongodb://localhost/facescraper')
-  //mongoose.connect('mongodb://heroku_60zpcwg0:ubn0n27pi2856flqoedo9glvh8@ds119578.mlab.com:19578/heroku_60zpcwg0');
+  mongoose.connect(connectionUrl);
 }
 
 var db = mongoose.connection;
@@ -42,16 +46,15 @@ app.get('/scraping', (req, res) => {
   request('https://askubuntu.com/', (err, respond, html) => {
     let $ = cheerio.load(html);
 console.log('------------------------------$$$$-------------------------------------------------');
-    // console.log(html);
+ console.log(html);
     $('.summary').each(function(i, element) {
- //$('.question-hyperlink .summary').each(function(i, element) {
- //$('.question-hyperlink .summary').each(function(i, element) {
+
       let result = {};
       result.title = $(this).children("h3").children('a').text();
-      result.link = $(this).children("h3").children('a').attr("href");
+      result.link = URL + $(this).children("h3").children('a').attr("href");console.log("this is result.link",result.link);
       result.content = $(this).children('.tags').text();
-      // console.log(result);
-
+ // console.log(result);
+console.log("this is result ",result);
       let oneArticle = new Article(result);
       console.log('-------------------------------------------------------------------------------');
       console.log('look here for link',result.link);
