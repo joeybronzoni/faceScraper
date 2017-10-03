@@ -21,6 +21,7 @@
   </div>
 </div>
 </form>
+
 {{#each article.comments}}
   <div class="panel panel-default">
     <div class="panel-heading input-group">
@@ -35,4 +36,4 @@
       {{this.body}}
     </div>
   </div>
-{{/each}}
+  {{/each}}

@@ -46,7 +46,7 @@ app.get('/scraping', (req, res) => {
   request('https://askubuntu.com/', (err, respond, html) => {
     let $ = cheerio.load(html);
 console.log('------------------------------$$$$-------------------------------------------------');
- console.log(html);
+ //console.log(html);
     $('.summary').each(function(i, element) {
 
       let result = {};
@@ -56,11 +56,11 @@ console.log('------------------------------$$$$---------------------------------
  // console.log(result);
 console.log("this is result ",result);
       let oneArticle = new Article(result);
-      console.log('-------------------------------------------------------------------------------');
-      console.log('look here for link',result.link);
-      console.log('-------------------------------------------------------------------------------');
-      console.log('TITLE Here', result.title);
-      console.log('-------------------------------------------------------------------------------');
+      // console.log('-------------------------------------------------------------------------------');
+      // console.log('look here for link',result.link);
+      // console.log('-------------------------------------------------------------------------------');
+      // console.log('TITLE Here', result.title);
+      // console.log('-------------------------------------------------------------------------------');
    //creating new instance of Article
       var article = new Article(result);
       //saving article to MongoDB
@@ -114,6 +114,49 @@ app.get('/articles/:id', (req, res) => {
       res.render('comments', {
         //Loop over each instance of comments for a particular article to display all comments
         article: doc
+        });
+      }
+    });
+});
+
+//Posting saved articles
+app.post('/savedArticles/:id', (req, res) => {
+  //Creates new instance of Comment
+  var newComment = new Comment(req.body);
+
+  //Saves new comment 
+  newComment.save((err, doc) => {
+    //If error
+    if (err) {
+      console.log(err);
+      //Else update article with id include a new comment with same id
+      } else {
+        var articleId = req.params.id;
+        Article.findOneAndUpdate({'_id': articleId, 'saved': true }, {$push: {'comments': doc._id}})
+        .exec((err, doc) => {
+          if (err) {
+            console.log(err);
+            } else {
+              //Redirects to the specific article's comment page
+              res.redirect('/savedArticles/' + articleId);
+              }
+          });
+        }
+    });
+});
+
+app.get('/savedArticles', (req, res) => {
+  Article.find({"saved":true}, (err, doc) => {
+    //Displays error if any
+    if (err) {
+      console.log(err);
+      }
+    //Otherwise, renders articles.handlebar template
+    else {
+      res.render('articles', {
+      //res.redirect('/articles',{
+        //"loop over articles" is the variable 
+        articles: doc
         });
       }
     });
@@ -185,7 +228,7 @@ app.get('/saved', (req, res) => {
 
 app.post('/saved/:id', (req, res) => {
   Article.update({ '_id' : req.params.id}, { $set :{ 'saved' : true}}, (err, res) => (err) ? console.log(err) : console.log(res));
-  res.redirect('/articles');
+  res.redirect('/savedArticles');
 })
 
 //Unsaves article
